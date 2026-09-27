@@ -3,55 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-color" content="#b9eaff" />
+    <meta name="theme-color" content="#091225" />
     <title>Flappy Color</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main id="game-shell" aria-label="Flappy Color 游戏区域">
       <div id="canvas-host" aria-hidden="true"></div>
-
       <header class="hud">
-        <div class="score-card">
-          <span class="score-label">SCORE</span>
-          <strong id="score">0</strong>
-        </div>
-        <div class="hp-card" aria-label="生命值">
-          <span class="score-label">HP</span>
-          <div id="hearts" class="hearts" aria-hidden="true">
-            <span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span>
-          </div>
-        </div>
-        <div class="best-card">
-          <span class="score-label">BEST</span>
-          <strong id="best">0</strong>
-        </div>
+        <div class="score-card"><span class="score-label">SCORE</span><strong id="score">0</strong></div>
+        <div class="hp-card" aria-label="生命值"><span class="score-label">HP</span><div id="hearts" class="hearts" aria-hidden="true"><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span></div></div>
+        <div class="best-card"><span class="score-label">BEST</span><strong id="best">0</strong></div>
       </header>
-
-      <section id="start-panel" class="panel visible" aria-live="polite">
-        <div class="panel-card">
-          <p class="eyebrow">COLOR ILLUSTRATION · FLAPPY</p>
-          <h1>三颗心，继续冲</h1>
-          <p class="hint">碰尖尖扣 1 颗心；铜锣烧回血，绿色毒药扣血。掉出画面会直接失败。</p>
-          <button id="start-button" type="button">开始游戏</button>
-          <p class="subhint">20 分后电流会先黄光预警两次，再真正通电；看节奏穿过去。</p>
-        </div>
-      </section>
-
-      <section id="game-over-panel" class="panel" aria-live="polite">
-        <div class="panel-card compact">
-          <p class="eyebrow">GAME OVER</p>
-          <h2>生命值耗尽</h2>
-          <div class="result-row">
-            <div><span>本次</span><strong id="final-score">0</strong></div>
-            <div><span>最佳</span><strong id="final-best">0</strong></div>
-          </div>
-          <button id="restart-button" type="button">再来一次</button>
-        </div>
-      </section>
-
+      <section id="start-panel" class="panel visible" aria-live="polite"><div class="panel-card"><p class="eyebrow">NIGHT COLOR · FLAPPY</p><h1>三颗心，继续冲</h1><p class="hint">碰尖尖扣 1 颗心；铜锣烧回血，绿色毒药扣血。掉出画面会直接失败。</p><button id="start-button" type="button">开始游戏</button><p class="subhint">20 分后：黄光预警两次 → 蓝色电流通电。跳跃和受伤使用你上传的原始音效。</p></div></section>
+      <section id="game-over-panel" class="panel" aria-live="polite"><div class="panel-card compact"><p class="eyebrow">GAME OVER</p><h2>这次飞完了</h2><div class="result-row"><div><span>本次</span><strong id="final-score">0</strong></div><div><span>最佳</span><strong id="final-best">0</strong></div></div><button id="restart-button" type="button">再来一次</button></div></section>
       <div class="tap-tip">TAP · SPACE</div>
     </main>
-    <script type="module" src="./src/game-v4.js"></script>
+    <script type="module" src="./src/game-v5.js"></script>
   </body>
 </html>
