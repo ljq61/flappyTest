@@ -72,27 +72,34 @@ function obstacleTex(type){
     x.strokeStyle='#b67e1b';x.lineWidth=7;for(let y=840;y<1320;y+=56){x.beginPath();x.moveTo(107,y);x.lineTo(139,y+16);x.moveTo(283,y+16);x.lineTo(311,y);x.stroke()}
     x.fillStyle='#253449';rr(x,107,1344,201,102,24);x.fill();x.fillStyle='#9badbc';x.beginPath();x.arc(209,1395,21,0,Math.PI*2);x.fill();x.fillStyle='#172535';x.beginPath();x.arc(209,1395,11,0,Math.PI*2);x.fill();
   }else{
-    // A long forearm with a closed fist and an extended middle finger.
-    const skin=x.createLinearGradient(90,0,344,0);skin.addColorStop(0,'#c67c59');skin.addColorStop(.42,'#f8c49a');skin.addColorStop(.72,'#edac80');skin.addColorStop(1,'#bc7051');
-    const arm=()=>{
-      x.beginPath();x.moveTo(145,300);x.quadraticCurveTo(110,282,94,242);x.quadraticCurveTo(79,212,90,177);
-      x.quadraticCurveTo(98,153,126,157);x.lineTo(128,147);x.quadraticCurveTo(145,121,174,148);
-      x.lineTo(174,44);x.bezierCurveTo(174,-4,242,-4,242,44);x.lineTo(242,143);
-      x.quadraticCurveTo(275,119,295,154);x.quadraticCurveTo(329,143,339,174);
-      x.lineTo(344,223);x.quadraticCurveTo(336,279,278,310);x.lineTo(296,1500);x.lineTo(124,1500);x.closePath()
-    };
-    x.fillStyle=skin;arm();x.fill();outline(x,arm,'#613d3c',9);
+    // Back-of-fist middle finger: layered forearm, fist, knuckle rolls, raised finger and wrapping thumb.
+    const skin=x.createLinearGradient(100,0,340,0);skin.addColorStop(0,'#c67c59');skin.addColorStop(.42,'#f8c49a');skin.addColorStop(.72,'#edac80');skin.addColorStop(1,'#bc7051');
+    const fillPart=(draw,w=9)=>{x.fillStyle=skin;draw();x.fill();outline(x,draw,'#613d3c',w)};
+    const forearm=()=>{x.beginPath();x.moveTo(162,308);x.quadraticCurveTo(152,314,152,340);x.lineTo(150,1500);x.lineTo(276,1500);x.lineTo(274,340);x.quadraticCurveTo(274,314,264,308);x.closePath()};
+    const fist=()=>{x.beginPath();x.moveTo(122,170);x.quadraticCurveTo(102,238,118,300);x.quadraticCurveTo(126,330,146,332);x.lineTo(278,332);x.quadraticCurveTo(298,330,306,300);x.quadraticCurveTo(326,238,302,170);x.closePath()};
+    const finger=()=>{x.beginPath();x.moveTo(181,192);x.lineTo(183,64);x.quadraticCurveTo(183,10,208,8);x.quadraticCurveTo(233,10,233,64);x.lineTo(235,192);x.closePath()};
+    fillPart(forearm);fillPart(fist);
     x.shadowColor='transparent';
-    x.fillStyle='#ffe0c5';rr(x,187,22,42,42,14);x.fill();
-    x.strokeStyle='#a66650';x.lineWidth=6;
-    // Curled fingers and the thumb crossing the palm make the gesture readable.
-    x.beginPath();x.moveTo(132,157);x.lineTo(132,196);x.quadraticCurveTo(149,216,174,200);x.lineTo(174,150);
-    x.moveTo(243,147);x.lineTo(243,200);x.quadraticCurveTo(266,222,290,201);x.lineTo(295,160);
-    x.moveTo(293,207);x.quadraticCurveTo(315,225,336,208);x.stroke();
-    x.fillStyle='#efb087';x.beginPath();x.moveTo(96,183);x.quadraticCurveTo(121,173,148,203);x.lineTo(206,228);x.quadraticCurveTo(226,248,204,262);x.quadraticCurveTo(146,262,114,231);x.closePath();x.fill();x.stroke();
-    x.lineWidth=4;x.beginPath();x.moveTo(189,85);x.quadraticCurveTo(208,91,227,85);x.moveTo(188,116);x.lineTo(226,116);
-    x.moveTo(162,305);x.quadraticCurveTo(211,318,264,301);x.moveTo(164,324);x.quadraticCurveTo(209,335,257,320);x.stroke();
-    x.strokeStyle='rgba(255,228,199,.34)';x.lineWidth=18;x.beginPath();x.moveTo(173,370);x.quadraticCurveTo(164,900,168,1480);x.stroke();
+    // Curled index, ring and pinky rolls flank the raised finger.
+    fillPart(()=>{rr(x,122,132,60,82,30)});fillPart(()=>{rr(x,236,132,58,78,29)});fillPart(()=>{rr(x,296,164,40,56,21)},7);
+    fillPart(finger);
+    x.fillStyle='#ffe0c5';rr(x,193,22,30,34,12);x.fill();x.strokeStyle='#a66650';x.lineWidth=4;rr(x,193,22,30,34,12);x.stroke();
+    fillPart(()=>{rr(x,108,238,172,62,31)});
+    x.strokeStyle='#a66650';x.lineWidth=5;
+    x.beginPath();
+    x.moveTo(132,158);x.quadraticCurveTo(152,166,172,156);
+    x.moveTo(130,188);x.quadraticCurveTo(152,196,174,186);
+    x.moveTo(246,156);x.quadraticCurveTo(266,164,288,154);
+    x.moveTo(244,186);x.quadraticCurveTo(266,194,290,184);
+    x.moveTo(302,188);x.quadraticCurveTo(316,194,330,186);
+    x.moveTo(126,218);x.quadraticCurveTo(150,228,178,216);
+    x.moveTo(242,214);x.quadraticCurveTo(266,224,290,212);
+    x.stroke();
+    x.lineWidth=4;
+    x.beginPath();x.moveTo(185,74);x.quadraticCurveTo(208,82,231,74);x.moveTo(185,112);x.quadraticCurveTo(208,120,231,112);x.stroke();
+    x.beginPath();x.moveTo(254,244);x.quadraticCurveTo(268,269,254,294);x.stroke();
+    x.lineWidth=6;x.beginPath();x.moveTo(150,346);x.quadraticCurveTo(210,358,270,344);x.moveTo(152,364);x.quadraticCurveTo(210,375,268,362);x.stroke();
+    x.strokeStyle='rgba(255,228,199,.34)';x.lineWidth=18;x.beginPath();x.moveTo(170,380);x.quadraticCurveTo(160,900,166,1480);x.stroke();
   }
   x.shadowColor='transparent';return tex(c)
 }
