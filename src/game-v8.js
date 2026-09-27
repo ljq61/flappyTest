@@ -215,15 +215,33 @@ playerMat.onBeforeCompile=shader=>{
 const player=new THREE.Sprite(playerMat);player.position.set(PX,START_Y,3);player.scale.set(PW,PH,1);scene.add(player);
 new THREE.TextureLoader().load(HERO_IMAGE_URL,t=>{t.colorSpace=THREE.SRGBColorSpace;playerMat.map=t;playerMat.needsUpdate=true});
 
+// Star invincibility countdown pinned above the hero's head.
+const cdCanvas=document.createElement('canvas');cdCanvas.width=256;cdCanvas.height=128;
+const cdCtx=cdCanvas.getContext('2d');
+const countdownMat=new THREE.SpriteMaterial({map:tex(cdCanvas),transparent:true,depthTest:false,depthWrite:false});
+const countdown=new THREE.Sprite(countdownMat);countdown.scale.set(1.05,.525,1);countdown.visible=false;scene.add(countdown);
+let cdShown='';
+function drawCountdown(text,blink){
+  const x=cdCtx;x.clearRect(0,0,256,128);x.lineJoin=x.lineCap='round';
+  x.fillStyle=blink?'#3a122dee':'#33284dd9';rr(x,14,30,228,68,34);x.fill();
+  x.strokeStyle=blink?'#ff5d7d':'#9badc5';x.lineWidth=7;rr(x,14,30,228,68,34);x.stroke();
+  x.fillStyle=blink?'#ff8ba3':'#ffe24f';x.strokeStyle=blink?'#ff5d7d':'#b97719';x.lineWidth=5;x.beginPath();
+  for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?9:22,px=58+Math.cos(a)*r,py=64+Math.sin(a)*r;if(i===0)x.moveTo(px,py);else x.lineTo(px,py)}
+  x.closePath();x.fill();x.stroke();
+  x.fillStyle='#fff';x.font='bold 46px sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(text,152,66);
+  countdownMat.map.needsUpdate=true
+}
+
 const jumpAudio=new Audio(JUMP_AUDIO_URL);jumpAudio.preload='auto';jumpAudio.volume=.18;jumpAudio.load();
 const hurtAudio=new Audio(HURT_AUDIO_URL);hurtAudio.preload='auto';hurtAudio.volume=.32;hurtAudio.load();
-let hurtPrimed=false;
-function primeHurt(){
-  if(hurtPrimed)return;hurtPrimed=true;const v=hurtAudio.volume;hurtAudio.volume=0;hurtAudio.currentTime=0;
-  const p=hurtAudio.play();if(p?.then)p.then(()=>{hurtAudio.pause();hurtAudio.currentTime=0;hurtAudio.volume=v}).catch(()=>{hurtAudio.volume=v});else hurtAudio.volume=v
+let jumpBuf=null,hurtBuf=null;
+function playSfx(buf,el,vol){
+  // Prefer the pre-decoded buffer (instant); HTML audio is the fallback for setups where fetch/decode failed (e.g. file://).
+  if(buf&&audioCtx?.state==='running'){const s=audioCtx.createBufferSource();s.buffer=buf;const g=audioCtx.createGain();g.gain.value=vol;s.connect(g);g.connect(audioCtx.destination);s.start();return}
+  try{el.pause();el.currentTime=0;el.volume=vol;const p=el.play();if(p?.catch)p.catch(()=>{})}catch{}
 }
-function playJump(){try{jumpAudio.pause();jumpAudio.currentTime=0;jumpAudio.volume=.18;const p=jumpAudio.play();if(p?.catch)p.catch(()=>{})}catch{}}
-function playHurt(){try{hurtAudio.pause();hurtAudio.currentTime=0;hurtAudio.volume=.32;const p=hurtAudio.play();if(p?.catch)p.catch(()=>{})}catch{}}
+function playJump(){playSfx(jumpBuf,jumpAudio,.18)}
+function playHurt(){playSfx(hurtBuf,hurtAudio,.32)}
 
 let audioCtx=null,bgmMaster=null,bgmTimer=null,bgmStarted=false,nextBgmTime=0,starMusicOn=false;const bgmVoices=[];
 function ensureAudio(){
@@ -240,6 +258,12 @@ function ensureAudio(){
 function withAudio(fn){
   const a=ensureAudio();if(!a)return;
   if(a.state==='running')fn(a);else a.resume().then(()=>fn(a)).catch(()=>{})
+}
+// Pre-decode the SFX at load (decodeAudioData runs while suspended) so the first hit never stalls on fetch+decode.
+if(ensureAudio()){
+  const decSfx=async u=>{try{return await audioCtx.decodeAudioData(await(await fetch(u)).arrayBuffer())}catch{return null}};
+  decSfx(JUMP_AUDIO_URL).then(b=>{if(b)jumpBuf=b});
+  decSfx(HURT_AUDIO_URL).then(b=>{if(b)hurtBuf=b});
 }
 function synthFail(){
   withAudio(a=>{
@@ -417,6 +441,12 @@ function updateStarVisual(){
   const tip=document.querySelector('.tap-tip');
   tip.textContent=starTime>0?`★ 无敌 ${starTime.toFixed(1)}s`:'TAP · SPACE';
   tip.classList.toggle('star-active',starTime>0);
+  countdown.visible=starTime>0;
+  if(starTime>0){
+    countdown.position.set(player.position.x,Math.min(player.position.y+PH*.5+.62,HH-.32),3.6);
+    const txt=starTime.toFixed(1)+'s',blink=starTime<=1&&Math.floor(gameTime*6)%2===0,key=txt+(blink?'!':'');
+    if(key!==cdShown){cdShown=key;drawCountdown(txt,blink)}
+  }
 }
 function collectStar(){starTime=STAR_SECONDS;invuln=0;playerMat.opacity=1;updateStarVisual();toneStar();starBurst()}
 function heal(){if(hp<MAX_HP){hp++;hearts()}toneHeal();healBurst()}
@@ -477,9 +507,8 @@ function update(dt){
 }
 function action(){if(state==='ready'||state==='gameover')start();else flap()}
 function beginFromGesture(){
-  primeHurt();
-  action();
   ensureAudio();
+  action();
   startMidiBgm()
 }
 startBtn.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();beginFromGesture()});
