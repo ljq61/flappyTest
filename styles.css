@@ -34,4 +34,4 @@ button,#game-shell{-webkit-tap-highlight-color:transparent}button{font:inherit}
 @media(min-width:760px){#game-shell{border-radius:25px}}
 
 .icon-button:focus-visible{outline:2px solid #a6e5ff;outline-offset:3px}
-.tap-tip.star-active{color:#fff3a0;border-color:#ffe24f;background:rgba(72,40,102,.85);font-size:12px;letter-spacing:.04em;box-shadow:0 0 20px #ab70ff66}
+.tap-tip.star-active{color:#fff3a0;border-color:#ffe24f;background:rgba(72,40,102,.85);font-size:12px;letter-spacing:.04em;box-shadow:0 0 20px #ab70ff66;bottom:auto;top:calc(max(14px,env(safe-area-inset-top)) + 62px)}

@@ -249,7 +249,7 @@ function ensureAudio(){
   if(!audioCtx){
     audioCtx=new C();
     bgmMaster=audioCtx.createGain();
-    bgmMaster.gain.value=1.1;
+    bgmMaster.gain.value=1.5;
     bgmMaster.connect(audioCtx.destination)
   }
   if(audioCtx.state==='suspended')void audioCtx.resume();
@@ -304,7 +304,7 @@ function setStarMusic(on){
   if(starMusicOn===on)return;starMusicOn=on;
   if(!audioCtx||!bgmMaster)return;
   const n=audioCtx.currentTime;
-  bgmMaster.gain.setTargetAtTime(on?1.4:1.1,n,.06);
+  bgmMaster.gain.setTargetAtTime(on?1.9:1.5,n,.06);
   for(const k of bgmVoices){
     try{
       k.g.gain.cancelScheduledValues(n);k.g.gain.setValueAtTime(k.g.gain.value,n);k.g.gain.linearRampToValueAtTime(.0001,n+.05);k.o.stop(n+.06);
