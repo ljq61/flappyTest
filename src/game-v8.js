@@ -1,6 +1,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js';
 import { HERO_IMAGE_URL } from './hero-data.js';
 import { HURT_AUDIO_URL } from './audio-hurt.js';
+import { LAUGH_AUDIO_URL } from './audio-laugh.js';
 import { JUMP_AUDIO_URL } from './audio-jump-v8.js';
 import { BGM_MIDI_BASE64, BGM_LOOP_SECONDS, BGM_NOTES } from './bgm-midi-v8.js';
 
@@ -71,7 +72,7 @@ function obstacleTex(type){
     x.strokeStyle='#c2d1dc';x.lineWidth=6;for(let y=625;y<754;y+=25){x.beginPath();x.moveTo(170,y);x.lineTo(252,y);x.stroke()}
     x.strokeStyle='#b67e1b';x.lineWidth=7;for(let y=840;y<1320;y+=56){x.beginPath();x.moveTo(107,y);x.lineTo(139,y+16);x.moveTo(283,y+16);x.lineTo(311,y);x.stroke()}
     x.fillStyle='#253449';rr(x,107,1344,201,102,24);x.fill();x.fillStyle='#9badbc';x.beginPath();x.arc(209,1395,21,0,Math.PI*2);x.fill();x.fillStyle='#172535';x.beginPath();x.arc(209,1395,11,0,Math.PI*2);x.fill();
-  }else{
+  }else if(type==='hand'){
     // Back-of-fist middle finger: layered forearm, fist, knuckle rolls, raised finger and wrapping thumb.
     const skin=x.createLinearGradient(100,0,340,0);skin.addColorStop(0,'#c67c59');skin.addColorStop(.42,'#f8c49a');skin.addColorStop(.72,'#edac80');skin.addColorStop(1,'#bc7051');
     const fillPart=(draw,w=9)=>{x.fillStyle=skin;draw();x.fill();outline(x,draw,'#613d3c',w)};
@@ -100,10 +101,17 @@ function obstacleTex(type){
     x.beginPath();x.moveTo(254,244);x.quadraticCurveTo(268,269,254,294);x.stroke();
     x.lineWidth=6;x.beginPath();x.moveTo(150,346);x.quadraticCurveTo(210,358,270,344);x.moveTo(152,364);x.quadraticCurveTo(210,375,268,362);x.stroke();
     x.strokeStyle='rgba(255,228,199,.34)';x.lineWidth=18;x.beginPath();x.moveTo(170,380);x.quadraticCurveTo(160,900,166,1480);x.stroke();
+  }else{
+    // Placeholder poles for the generated-art pillar types; bootstrap-v9 repaints
+    // these canvases with the real sprites once they finish loading.
+    const pole={winter:['#efe3c8','#9a7b52'],wig:['#e8c88f','#8a6a3c'],scream:['#ffb066','#e2601a'],geek:['#ff9e4a','#d1501a']}[type]||['#cfd6e6','#5d6b8a'];
+    const g=x.createLinearGradient(105,0,315,0);g.addColorStop(0,pole[1]);g.addColorStop(.45,pole[0]);g.addColorStop(1,pole[1]);
+    x.fillStyle=g;rr(x,132,0,156,1500,58);x.fill();outline(x,()=>rr(x,132,0,156,1500,58));
+    x.fillStyle=pole[1];for(let y=560;y<1450;y+=232){rr(x,132,y,156,50,25);x.fill()}
   }
   x.shadowColor='transparent';return tex(c)
 }
-const obstacleTexs={pencil:obstacleTex('pencil'),knife:obstacleTex('knife'),hand:obstacleTex('hand')},types=Object.keys(obstacleTexs);
+const obstacleTexs={pencil:obstacleTex('pencil'),knife:obstacleTex('knife'),hand:obstacleTex('hand'),winter:obstacleTex('winter'),wig:obstacleTex('wig'),scream:obstacleTex('scream'),geek:obstacleTex('geek')},types=Object.keys(obstacleTexs);
 
 function pickupTex(type){
   const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');x.lineJoin=x.lineCap='round';x.shadowColor='rgba(0,0,0,.35)';x.shadowBlur=14;x.shadowOffsetY=7;
@@ -131,15 +139,15 @@ const pickupTexs={dorayaki:pickupTex('dorayaki'),poison:pickupTex('poison'),star
 
 function cloudTex(){
   const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');
-  x.fillStyle='#ffffffdd';x.strokeStyle='#a4b4d888';x.lineWidth=4;
+  x.fillStyle='#ffd9e8dd';x.strokeStyle='#d78cae88';x.lineWidth=4;
   [[40,70,25],[64,52,31],[88,70,23]].forEach(([a,b,r])=>{x.beginPath();x.arc(a,b,r,0,Math.PI*2);x.fill();x.stroke()});
   return tex(c)
 }
 function sparkleTex(){
   const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');
-  const g=x.createRadialGradient(64,64,0,64,64,58);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.15,'rgba(255,248,176,.95)');g.addColorStop(.45,'rgba(114,223,255,.48)');g.addColorStop(1,'rgba(80,170,255,0)');
+  const g=x.createRadialGradient(64,64,0,64,64,58);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.15,'rgba(255,224,239,.95)');g.addColorStop(.45,'rgba(255,130,195,.48)');g.addColorStop(1,'rgba(255,90,170,0)');
   x.fillStyle=g;x.fillRect(0,0,128,128);
-  x.save();x.translate(64,64);x.fillStyle='#fffde9';x.beginPath();x.moveTo(0,-45);x.quadraticCurveTo(7,-8,45,0);x.quadraticCurveTo(7,8,0,45);x.quadraticCurveTo(-7,8,-45,0);x.quadraticCurveTo(-7,-8,0,-45);x.fill();x.restore();
+  x.save();x.translate(64,64);x.fillStyle='#fff2f7';x.beginPath();x.moveTo(0,-45);x.quadraticCurveTo(7,-8,45,0);x.quadraticCurveTo(7,8,0,45);x.quadraticCurveTo(-7,8,-45,0);x.quadraticCurveTo(-7,-8,0,-45);x.fill();x.restore();
   return tex(c)
 }
 function dropTex(color,splat=false){
@@ -169,7 +177,16 @@ function circleRingTex(){
   x.strokeStyle='#ffffff';x.lineWidth=11;x.beginPath();x.arc(64,64,50,0,Math.PI*2);x.stroke();
   return tex(c)
 }
-const smokeTex=cloudTex(),glowTex=sparkleTex(),healFxTex=crossGlowTex(),starFxTex=starRayTex(),ringFxTex=circleRingTex(),bloodTex=dropTex('#ff234c'),poisonFxTex=dropTex('#48ff58',true);
+function meteorTex(){
+  const c=document.createElement('canvas');c.width=256;c.height=64;const x=c.getContext('2d');
+  // Tapered streak: long tail fades to the left, bright head leads at the right end.
+  const g=x.createLinearGradient(0,0,256,0);g.addColorStop(0,'rgba(120,190,255,0)');g.addColorStop(.5,'rgba(150,215,255,.45)');g.addColorStop(.82,'rgba(225,243,255,.9)');g.addColorStop(1,'rgba(255,255,255,1)');
+  x.fillStyle=g;x.beginPath();x.moveTo(4,32);x.quadraticCurveTo(150,20,226,32);x.quadraticCurveTo(150,44,4,32);x.fill();
+  const r=x.createRadialGradient(238,32,0,238,32,22);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.45,'rgba(210,240,255,.85)');r.addColorStop(1,'rgba(140,200,255,0)');
+  x.fillStyle=r;x.fillRect(212,6,52,52);
+  return tex(c)
+}
+const smokeTex=cloudTex(),glowTex=sparkleTex(),healFxTex=crossGlowTex(),starFxTex=starRayTex(),ringFxTex=circleRingTex(),bloodTex=dropTex('#ff234c'),poisonFxTex=dropTex('#48ff58',true),meteorMap=meteorTex();
 
 function cliffTex(){
   const c=document.createElement('canvas');c.width=900;c.height=560;const x=c.getContext('2d');
@@ -241,7 +258,8 @@ function drawCountdown(text,blink){
 
 const jumpAudio=new Audio(JUMP_AUDIO_URL);jumpAudio.preload='auto';jumpAudio.volume=.18;jumpAudio.load();
 const hurtAudio=new Audio(HURT_AUDIO_URL);hurtAudio.preload='auto';hurtAudio.volume=.32;hurtAudio.load();
-let jumpBuf=null,hurtBuf=null;
+const laughAudio=new Audio(LAUGH_AUDIO_URL);laughAudio.preload='auto';laughAudio.volume=.55;laughAudio.load();
+let jumpBuf=null,hurtBuf=null,laughBuf=null;
 function playSfx(buf,el,vol){
   // Prefer the pre-decoded buffer (instant); HTML audio is the fallback for setups where fetch/decode failed (e.g. file://).
   if(buf&&audioCtx?.state==='running'){const s=audioCtx.createBufferSource();s.buffer=buf;const g=audioCtx.createGain();g.gain.value=vol;s.connect(g);g.connect(audioCtx.destination);s.start();return}
@@ -249,6 +267,7 @@ function playSfx(buf,el,vol){
 }
 function playJump(){playSfx(jumpBuf,jumpAudio,.18)}
 function playHurt(){playSfx(hurtBuf,hurtAudio,.32)}
+function playLaugh(){playSfx(laughBuf,laughAudio,.55)}
 
 let audioCtx=null,bgmMaster=null,bgmTimer=null,bgmStarted=false,nextBgmTime=0,starMusicOn=false;const bgmVoices=[];
 function ensureAudio(){
@@ -271,6 +290,7 @@ if(ensureAudio()){
   const decSfx=async u=>{try{return await audioCtx.decodeAudioData(await(await fetch(u)).arrayBuffer())}catch{return null}};
   decSfx(JUMP_AUDIO_URL).then(b=>{if(b)jumpBuf=b});
   decSfx(HURT_AUDIO_URL).then(b=>{if(b)hurtBuf=b});
+  decSfx(LAUGH_AUDIO_URL).then(b=>{if(b)laughBuf=b});
 }
 function synthFail(){
   withAudio(a=>{
@@ -341,8 +361,8 @@ function startMidiBgm(){
   if(a.state==='running')go();else a.resume().then(go).catch(()=>{})
 }
 
-const smoke=[],particles=[],sparkles=[],obstacles=[],pickups=[];
-let state='ready',score=0,best=Number(localStorage.getItem('flappyTestBest')||0)||0,hp=MAX_HP,vy=0,spawn=.45,pulse=0,invuln=0,starTime=0,gameTime=0,pickupCooldown=3.5,launchTime=0,rounds=0,pity={poison:false,dorayaki:false,star:false};
+const smoke=[],particles=[],sparkles=[],obstacles=[],pickups=[],meteors=[];
+let state='ready',score=0,best=Number(localStorage.getItem('flappyTestBest')||0)||0,hp=MAX_HP,vy=0,spawn=.45,pulse=0,invuln=0,starTime=0,gameTime=0,pickupCooldown=3.5,launchTime=0,rounds=0,pity={poison:false,dorayaki:false,star:false},meteorTimer=rand(1.5,4);
 bestEl.textContent=best;finalBestEl.textContent=best;
 function hearts(){[...heartsEl.querySelectorAll('.heart')].forEach((e,i)=>e.classList.toggle('empty',i>=hp))}hearts();
 
@@ -387,7 +407,7 @@ function starBurst(){
   ringFlash('#ffd76a',4)
 }
 function burst(kind){
-  const t=kind==='poison'?poisonFxTex:bloodTex,n=kind==='poison'?10:15;
+  const t=kind==='poison'?poisonFxTex:bloodTex,n=kind==='poison'?10:30;
   for(let i=0;i<n;i++){
     const m=new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false}),s=new THREE.Sprite(m),z=rand(.07,.16),life=rand(.36,.75);
     s.scale.set(z,z,1);s.position.set(player.position.x+rand(-.15,.15),player.position.y+rand(-.15,.15),4);fxLayer.add(s);
@@ -414,6 +434,27 @@ function updateFx(dt){
 function clearFx(){
   for(const p of [...smoke,...particles,...sparkles]){fxLayer.remove(p.s);p.s.material.dispose()}
   smoke.length=0;particles.length=0;sparkles.length=0
+}
+
+// Ambient shooting stars: an occasional streak crossing the night sky, drawn
+// between the background and every gameplay layer.
+function spawnMeteor(){
+  const m=new THREE.SpriteMaterial({map:meteorMap,transparent:true,depthTest:false,depthWrite:false,blending:THREE.AdditiveBlending}),s=new THREE.Sprite(m);
+  const len=rand(1.4,2.4),spd=rand(7,11),dir=Math.random()<.5?-1:1,ang=rand(.3,.6);
+  const vx=dir*spd*Math.cos(ang),vy=-spd*Math.sin(ang);
+  s.scale.set(len,len/4,1);m.rotation=Math.atan2(vy,vx);
+  s.position.set(rand(-HW-2,HW+2),rand(1.2,HH+1.5),-6);
+  const life=rand(.9,1.5);s.material.opacity=0;scene.add(s);
+  meteors.push({s,vx,vy,life,max:life})
+}
+function updateMeteors(dt){
+  meteorTimer-=dt;
+  if(meteorTimer<=0){meteorTimer=rand(3,5);spawnMeteor()}
+  for(let i=meteors.length-1;i>=0;i--){
+    const m=meteors[i];m.life-=dt;m.s.position.x+=m.vx*dt;m.s.position.y+=m.vy*dt;
+    m.s.material.opacity=.95*Math.sin(Math.PI*Math.min(1,1-m.life/m.max));
+    if(m.life<=0){scene.remove(m.s);m.s.material.dispose();meteors.splice(i,1)}
+  }
 }
 
 function gap(){return 3.55-Math.min(score*.024,.62)}
@@ -471,7 +512,9 @@ function end(reason='hp'){
   if(score>best){best=score;localStorage.setItem('flappyTestBest',String(best))}
   bestEl.textContent=best;finalScoreEl.textContent=score;finalBestEl.textContent=best;
   overPanel.querySelector('h2').textContent=reason==='fall'?'看吧，还是掉下去了':'三颗心，交代得挺干净';
-  overPanel.classList.add('visible');synthFail()
+  overPanel.classList.add('visible');synthFail();
+  // The heavy mocking laugh lands a beat after the fail jingle; guard against instant restarts.
+  setTimeout(()=>{if(state==='gameover')playLaugh()},450)
 }
 function hitObstacle(o){
   const dx=Math.abs(o.group.position.x-PX);if(dx>=OW*.37+HITW/2)return false;
@@ -527,5 +570,5 @@ renderer.setAnimationLoop(()=>{
   if(state==='ready'){
     player.position.set(PX,START_Y,3);playerMat.rotation=0;
   }else if(state==='playing')update(dt);
-  updateFx(dt);renderer.render(scene,camera)
+  updateFx(dt);updateMeteors(dt);renderer.render(scene,camera)
 });
