@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#dff3f6" />
+    <title>Flappy Test</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main id="game-shell" aria-label="Flappy Test 游戏区域">
+      <div id="canvas-host" aria-hidden="true"></div>
+
+      <header class="hud">
+        <div class="score-card">
+          <span class="score-label">SCORE</span>
+          <strong id="score">0</strong>
+        </div>
+        <div class="best-card">
+          <span class="score-label">BEST</span>
+          <strong id="best">0</strong>
+        </div>
+      </header>
+
+      <section id="start-panel" class="panel visible" aria-live="polite">
+        <div class="panel-card">
+          <p class="eyebrow">THREE.JS · FLAPPY TEST</p>
+          <h1>穿过尖端之间</h1>
+          <p class="hint">点击 / 触摸 / 空格让角色向上飞。避开铅笔、美工刀和收起的雨伞。</p>
+          <button id="start-button" type="button">开始游戏</button>
+          <p class="subhint">主角当前为占位图，后续可直接替换为你的角色 PNG。</p>
+        </div>
+      </section>
+
+      <section id="game-over-panel" class="panel" aria-live="polite">
+        <div class="panel-card compact">
+          <p class="eyebrow">GAME OVER</p>
+          <h2>撞到了</h2>
+          <div class="result-row">
+            <div><span>本次</span><strong id="final-score">0</strong></div>
+            <div><span>最佳</span><strong id="final-best">0</strong></div>
+          </div>
+          <button id="restart-button" type="button">重新游戏</button>
+        </div>
+      </section>
+
+      <div class="tap-tip">TAP · SPACE</div>
+    </main>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
