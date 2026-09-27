@@ -19,20 +19,23 @@
       <section id="start-panel" class="panel visible" aria-live="polite">
         <div class="panel-card">
           <p class="eyebrow">NIGHT COLOR · FLAPPY</p>
-          <h1>三颗心，够你死三次</h1>
-          <p class="hint">尖尖蹭一下就收你一颗心。铜锣烧偶尔施舍，绿药负责劝退。掉出屏幕？连抢救都省了。</p>
+          <h1>悬崖都给你搭好了</h1>
+          <p class="hint">身后厕所都比你稳。第一下跳出去，就没有“我再想想”这回事了。</p>
           <button id="start-button" class="icon-button" type="button" aria-label="开始游戏">
             <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M22 15 L49 32 L22 49 Z"/></svg>
           </button>
-          <p class="subhint">20 分以后，柱子也开始看不惯你，会自己上下找你。背景音乐会很轻，免得影响你听惨叫。</p>
+          <p class="subhint">20 分以后柱子会主动找你。音乐负责装可爱，尖尖负责讲道理。</p>
         </div>
       </section>
 
       <section id="game-over-panel" class="panel" aria-live="polite">
-        <div class="watching-eye" aria-hidden="true"><span></span></div>
+        <div class="watching-eyes" aria-hidden="true">
+          <span class="watching-eye"></span>
+          <span class="watching-eye"></span>
+        </div>
         <div class="panel-card compact">
           <p class="eyebrow">GAME OVER</p>
-          <h2>它一直在等你失误</h2>
+          <h2>它们早就看见了</h2>
           <div class="result-row">
             <div><span>本次交代</span><strong id="final-score">0</strong></div>
             <div><span>还能嘴硬</span><strong id="final-best">0</strong></div>
@@ -40,12 +43,12 @@
           <button id="restart-button" class="icon-button restart" type="button" aria-label="重新开始">
             <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 24a18 18 0 1 1-2 16" fill="none"/><path d="M11 13v15h15"/></svg>
           </button>
-          <p class="death-note">别急，下一把也不一定更体面。</p>
+          <p class="death-note">别回头。后面那几个厕所都在笑。</p>
         </div>
       </section>
 
       <div class="tap-tip">TAP · SPACE</div>
     </main>
-    <script type="module" src="./src/game-v7.js"></script>
+    <script type="module" src="./src/game-v8.js"></script>
   </body>
 </html>
