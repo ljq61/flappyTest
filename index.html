@@ -6,6 +6,9 @@
     <meta name="theme-color" content="#070d1b" />
     <title>Flappy Color</title>
     <link rel="stylesheet" href="./styles.css" />
+    <!-- Prefetch the whole module graph (three.js CDN + all imports) in parallel
+         with the obstacle sprites, so first render is not serialized behind them. -->
+    <link rel="modulepreload" href="./src/game-v8.js" />
   </head>
   <body>
     <main id="game-shell" aria-label="Flappy Color 游戏区域">

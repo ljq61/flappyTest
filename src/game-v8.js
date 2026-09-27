@@ -269,7 +269,7 @@ function playJump(){playSfx(jumpBuf,jumpAudio,.18)}
 function playHurt(){playSfx(hurtBuf,hurtAudio,.32)}
 function playLaugh(){playSfx(laughBuf,laughAudio,.55)}
 
-let audioCtx=null,bgmMaster=null,bgmTimer=null,bgmStarted=false,nextBgmTime=0,starMusicOn=false;const bgmVoices=[];
+let audioCtx=null,bgmMaster=null,bgmTimer=null,bgmStarted=false,nextBgmTime=0,starMusicOn=false,bgmSeq=null,bgmIdx=0;const bgmVoices=[];
 function ensureAudio(){
   const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;
   if(!audioCtx){
@@ -338,17 +338,25 @@ function setStarMusic(on){
       if(k.hg){k.hg.gain.cancelScheduledValues(n);k.hg.gain.setValueAtTime(k.hg.gain.value,n);k.hg.gain.linearRampToValueAtTime(.0001,n+.05);k.h.stop(n+.06)}
     }catch{}
   }
-  bgmVoices.length=0;nextBgmTime=n+.07;
+  bgmVoices.length=0;nextBgmTime=n+.07;bgmIdx=0;
 }
 function scheduleMidiCycle(){
   if(audioCtx?.state==='running'&&bgmMaster){
     const n=audioCtx.currentTime;
     for(let i=bgmVoices.length-1;i>=0;i--)if(bgmVoices[i].end<=n)bgmVoices.splice(i,1);
-    // Schedule on the audio clock, ahead of the boundary, without adding a gap per loop.
-    if(nextBgmTime<n)nextBgmTime=n+.055;
-    if(nextBgmTime<n+.25){
-      for(const e of BGM_NOTES)scheduleMidiNote(audioCtx,e,nextBgmTime);
-      nextBgmTime+=BGM_LOOP_SECONDS*(starMusicOn?.8:1);
+    // Chunked look-ahead: phones hitch badly when hundreds of WebAudio nodes are
+    // created inside one tick, so notes go out in a short window per tick instead
+    // of the whole 25.6s loop at each boundary.
+    if(!bgmSeq)bgmSeq=[...BGM_NOTES].sort((a,b)=>a.t-b.t);
+    const ts=starMusicOn?.8:1,horizon=n+1.5;
+    // The anchor stays put while the pointer consumes notes; only a clearly
+    // overdue pointer (tab throttling) realigns the loop to "now" from the top.
+    if(nextBgmTime+bgmSeq[Math.min(bgmIdx,bgmSeq.length-1)].t*ts<n-.25){nextBgmTime=n+.055;bgmIdx=0}
+    for(let guard=0;guard<64;guard++){
+      if(bgmIdx>=bgmSeq.length){nextBgmTime+=BGM_LOOP_SECONDS*ts;bgmIdx=0;continue}
+      if(nextBgmTime+bgmSeq[bgmIdx].t*ts>=n+1.3)break;
+      scheduleMidiNote(audioCtx,bgmSeq[bgmIdx],nextBgmTime);
+      bgmIdx++;
     }
   }
   bgmTimer=setTimeout(scheduleMidiCycle,100)
