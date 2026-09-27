@@ -1,0 +1,241 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Inter, ui-rounded, "SF Pro Rounded", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #17323b;
+  background: #b9d9de;
+  font-synthesis: none;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(255, 255, 255, 0.9), transparent 36%),
+    linear-gradient(180deg, #b8d9df 0%, #dff0ec 54%, #f4e8cf 100%);
+}
+
+body {
+  display: grid;
+  place-items: center;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+button,
+#game-shell {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+#game-shell {
+  position: relative;
+  width: min(100vw, calc(100vh * 9 / 16));
+  height: min(100vh, calc(100vw * 16 / 9));
+  min-width: 280px;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  background: linear-gradient(180deg, #ddf3f5 0%, #eef6ed 62%, #f7ead2 100%);
+  box-shadow: 0 24px 80px rgba(20, 52, 60, 0.22);
+}
+
+#canvas-host,
+#canvas-host canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hud {
+  position: absolute;
+  z-index: 5;
+  top: max(18px, env(safe-area-inset-top));
+  left: 16px;
+  right: 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.score-card,
+.best-card {
+  min-width: 76px;
+  padding: 9px 12px 8px;
+  border: 1px solid rgba(24, 62, 69, 0.14);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 7px 20px rgba(30, 68, 73, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.best-card {
+  text-align: right;
+}
+
+.score-label {
+  display: block;
+  margin-bottom: 1px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: rgba(23, 50, 59, 0.52);
+}
+
+.score-card strong,
+.best-card strong {
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.panel {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background: rgba(222, 241, 242, 0.18);
+  transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.panel.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.panel-card {
+  width: min(100%, 330px);
+  padding: 30px 25px 23px;
+  border: 1px solid rgba(27, 71, 76, 0.13);
+  border-radius: 30px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 20px 56px rgba(31, 69, 76, 0.16);
+  backdrop-filter: blur(18px);
+}
+
+.panel-card.compact {
+  padding-top: 25px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: #34717a;
+}
+
+h1,
+h2 {
+  margin: 0;
+  color: #17323b;
+  letter-spacing: -0.04em;
+}
+
+h1 {
+  font-size: clamp(30px, 9vw, 44px);
+  line-height: 1.02;
+}
+
+h2 {
+  font-size: 34px;
+}
+
+.hint {
+  margin: 18px auto 20px;
+  max-width: 260px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(23, 50, 59, 0.68);
+}
+
+.subhint {
+  margin: 13px 0 0;
+  font-size: 11px;
+  line-height: 1.55;
+  color: rgba(23, 50, 59, 0.44);
+}
+
+button {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  color: #fffdf7;
+  background: #244f57;
+  box-shadow: 0 10px 24px rgba(36, 79, 87, 0.22);
+  cursor: pointer;
+}
+
+button:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.result-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.result-row div {
+  padding: 13px;
+  border-radius: 17px;
+  background: rgba(210, 235, 235, 0.55);
+}
+
+.result-row span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: rgba(23, 50, 59, 0.52);
+}
+
+.result-row strong {
+  display: block;
+  font-size: 30px;
+}
+
+.tap-tip {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  padding: 7px 11px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: rgba(23, 50, 59, 0.38);
+  background: rgba(255, 255, 255, 0.38);
+  pointer-events: none;
+}
+
+@media (min-width: 760px) {
+  #game-shell {
+    border-radius: 28px;
+  }
+}
