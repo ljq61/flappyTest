@@ -15,10 +15,37 @@
         <div class="hp-card" aria-label="生命值"><span class="score-label">HP</span><div id="hearts" class="hearts" aria-hidden="true"><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span></div></div>
         <div class="best-card"><span class="score-label">BEST</span><strong id="best">0</strong></div>
       </header>
-      <section id="start-panel" class="panel visible" aria-live="polite"><div class="panel-card"><p class="eyebrow">NIGHT COLOR · FLAPPY</p><h1>三颗心，继续冲</h1><p class="hint">碰尖尖扣 1 颗心；铜锣烧回血，绿色毒药扣血。掉出画面会直接失败。</p><button id="start-button" type="button">开始游戏</button><p class="subhint">20 分后，上下障碍会开始周期性上下移动；越往后移动幅度越大。跳跃和失败使用你上传的音效。</p></div></section>
-      <section id="game-over-panel" class="panel" aria-live="polite"><div class="panel-card compact"><p class="eyebrow">GAME OVER</p><h2>这次飞完了</h2><div class="result-row"><div><span>本次</span><strong id="final-score">0</strong></div><div><span>最佳</span><strong id="final-best">0</strong></div></div><button id="restart-button" type="button">再来一次</button></div></section>
+
+      <section id="start-panel" class="panel visible" aria-live="polite">
+        <div class="panel-card">
+          <p class="eyebrow">NIGHT COLOR · FLAPPY</p>
+          <h1>三颗心，够你死三次</h1>
+          <p class="hint">尖尖蹭一下就收你一颗心。铜锣烧偶尔施舍，绿药负责劝退。掉出屏幕？连抢救都省了。</p>
+          <button id="start-button" class="icon-button" type="button" aria-label="开始游戏">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M22 15 L49 32 L22 49 Z"/></svg>
+          </button>
+          <p class="subhint">20 分以后，柱子也开始看不惯你，会自己上下找你。背景音乐会很轻，免得影响你听惨叫。</p>
+        </div>
+      </section>
+
+      <section id="game-over-panel" class="panel" aria-live="polite">
+        <div class="watching-eye" aria-hidden="true"><span></span></div>
+        <div class="panel-card compact">
+          <p class="eyebrow">GAME OVER</p>
+          <h2>它一直在等你失误</h2>
+          <div class="result-row">
+            <div><span>本次交代</span><strong id="final-score">0</strong></div>
+            <div><span>还能嘴硬</span><strong id="final-best">0</strong></div>
+          </div>
+          <button id="restart-button" class="icon-button restart" type="button" aria-label="重新开始">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 24a18 18 0 1 1-2 16" fill="none"/><path d="M11 13v15h15"/></svg>
+          </button>
+          <p class="death-note">别急，下一把也不一定更体面。</p>
+        </div>
+      </section>
+
       <div class="tap-tip">TAP · SPACE</div>
     </main>
-    <script type="module" src="./src/game-v6.js"></script>
+    <script type="module" src="./src/game-v7.js"></script>
   </body>
 </html>
