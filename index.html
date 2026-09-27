@@ -16,6 +16,16 @@
           <span class="score-label">SCORE</span>
           <strong id="score">0</strong>
         </div>
+
+        <div class="hp-card" aria-label="生命值">
+          <span class="score-label">HP</span>
+          <div id="hearts" class="hearts" aria-hidden="true">
+            <span class="heart">♥</span>
+            <span class="heart">♥</span>
+            <span class="heart">♥</span>
+          </div>
+        </div>
+
         <div class="best-card">
           <span class="score-label">BEST</span>
           <strong id="best">0</strong>
@@ -25,17 +35,17 @@
       <section id="start-panel" class="panel visible" aria-live="polite">
         <div class="panel-card">
           <p class="eyebrow">PENCIL SKETCH · FLAPPY</p>
-          <h1>别碰尖尖</h1>
-          <p class="hint">点击 / 触摸 / 空格让角色往上蹦。铅笔笔尖、美工刀刀片和雨伞尖都会对着中间。</p>
+          <h1>三颗心，别浪</h1>
+          <p class="hint">点击 / 触摸 / 空格起跳。碰尖尖掉 1 颗心；铜锣烧回血，绿色毒药扣血。20 分以后，中间会间歇放电。</p>
           <button id="start-button" type="button">开始乱飞</button>
-          <p class="subhint">每次起跳，屁股后面都会喷一小团铅笔烟。</p>
+          <p class="subhint">起跳会放屁；受伤会流血并惨叫。电流是有节奏地闪现，不是一直开着。</p>
         </div>
       </section>
 
       <section id="game-over-panel" class="panel" aria-live="polite">
         <div class="panel-card compact">
           <p class="eyebrow">GAME OVER</p>
-          <h2>撞尖尖了</h2>
+          <h2>三颗心都没了</h2>
           <div class="result-row">
             <div><span>本次</span><strong id="final-score">0</strong></div>
             <div><span>最佳</span><strong id="final-best">0</strong></div>
@@ -47,6 +57,6 @@
       <div class="tap-tip">TAP · SPACE</div>
     </main>
 
-    <script type="module" src="./src/game-v2.js"></script>
+    <script type="module" src="./src/game-v3.js"></script>
   </body>
 </html>
