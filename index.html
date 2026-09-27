@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-color" content="#dff3f6" />
-    <title>Flappy Test</title>
+    <meta name="theme-color" content="#f2ecdd" />
+    <title>Flappy Sketch</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main id="game-shell" aria-label="Flappy Test 游戏区域">
+    <main id="game-shell" aria-label="Flappy Sketch 游戏区域">
       <div id="canvas-host" aria-hidden="true"></div>
 
       <header class="hud">
@@ -24,29 +24,29 @@
 
       <section id="start-panel" class="panel visible" aria-live="polite">
         <div class="panel-card">
-          <p class="eyebrow">THREE.JS · FLAPPY TEST</p>
-          <h1>穿过尖端之间</h1>
-          <p class="hint">点击 / 触摸 / 空格让角色向上飞。避开铅笔、美工刀和收起的雨伞。</p>
-          <button id="start-button" type="button">开始游戏</button>
-          <p class="subhint">主角当前为占位图，后续可直接替换为你的角色 PNG。</p>
+          <p class="eyebrow">PENCIL SKETCH · FLAPPY</p>
+          <h1>别碰尖尖</h1>
+          <p class="hint">点击 / 触摸 / 空格让角色往上蹦。铅笔笔尖、美工刀刀片和雨伞尖都会对着中间。</p>
+          <button id="start-button" type="button">开始乱飞</button>
+          <p class="subhint">每次起跳，屁股后面都会喷一小团铅笔烟。</p>
         </div>
       </section>
 
       <section id="game-over-panel" class="panel" aria-live="polite">
         <div class="panel-card compact">
           <p class="eyebrow">GAME OVER</p>
-          <h2>撞到了</h2>
+          <h2>撞尖尖了</h2>
           <div class="result-row">
             <div><span>本次</span><strong id="final-score">0</strong></div>
             <div><span>最佳</span><strong id="final-best">0</strong></div>
           </div>
-          <button id="restart-button" type="button">重新游戏</button>
+          <button id="restart-button" type="button">再来一次</button>
         </div>
       </section>
 
       <div class="tap-tip">TAP · SPACE</div>
     </main>
 
-    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/game-v2.js"></script>
   </body>
 </html>
