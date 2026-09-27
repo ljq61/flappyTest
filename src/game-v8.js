@@ -438,9 +438,6 @@ function damage(kind='spike'){
 function updateStarVisual(){
   if((starTime>0)!==starMusicOn)setStarMusic(starTime>0);
   rainbowTime.value=starTime>0?gameTime:-1;
-  const tip=document.querySelector('.tap-tip');
-  tip.textContent=starTime>0?`★ 无敌 ${starTime.toFixed(1)}s`:'TAP · SPACE';
-  tip.classList.toggle('star-active',starTime>0);
   countdown.visible=starTime>0;
   if(starTime>0){
     countdown.position.set(player.position.x,Math.min(player.position.y+PH*.5+.62,HH-.32),3.6);
